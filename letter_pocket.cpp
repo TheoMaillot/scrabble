@@ -1,10 +1,8 @@
 #include "letter_pocket.hpp"
+#include <random>
 
-Pocket* create_letter_pocket() {
-    Pocket* pocket = new Pocket();
-    pocket->total_letters = 0;
-
-    // Initialize letter values and quantities
+Pocket::Pocket()
+{
     const int letter_values[26] = {
         1, 3, 3, 2, 1, 4, 2, 4, 1, 8,
         5, 1, 3, 1, 1, 3, 10, 1, 1, 1,
@@ -17,52 +15,81 @@ Pocket* create_letter_pocket() {
         4, 2, 2, 1, 2, 1
     };
 
+    total_letters_ = 0;
     for (int i = 0; i < 26; ++i) {
-        pocket->letters[i].character = 'A' + i;
-        pocket->letters[i].value = letter_values[i];
-        pocket->letters[i].quantity = letter_quantities[i];
-        pocket->total_letters += letter_quantities[i];
+        letters_[i].character = static_cast<char>('A' + i);
+        letters_[i].value = letter_values[i];
+        letters_[i].quantity = letter_quantities[i];
+        total_letters_ += letter_quantities[i];
     }
-
-    return pocket;
 }
 
-Hand* create_hand() {
-    Hand* hand = new Hand();
-    hand->letters = new Letter[HAND_SIZE];
-    hand->total_letters = 0;
-    return hand;
+int Pocket::totalLetters() const noexcept
+{
+    return total_letters_;
 }
 
-Hand* withdraw_letters(Hand* hand, Pocket* pocket) {
-    int missing_letters = HAND_SIZE - hand->total_letters;
+bool Pocket::draw(Letter &out)
+{
+    if (total_letters_ == 0) return false;
 
-    for (int i = 0; i < missing_letters; ++i) {
-        bool letter_found = false;
-        while (!letter_found) {
-            int random_index = rand() % 26;
-            if (pocket->letters[random_index].quantity > 0) {
-                hand->letters[hand->total_letters] = pocket->letters[random_index];
-                pocket->letters[random_index].quantity--;
-                pocket->total_letters--;
-                hand->total_letters++;
-                letter_found = true;
-            }
+    static thread_local std::mt19937 rng(std::random_device{}());
+    std::uniform_int_distribution<int> dist(0, 25);
+
+    // pick a random index with available quantity
+    for (;;) {
+        int idx = dist(rng);
+        if (letters_[idx].quantity > 0) {
+            out.character = letters_[idx].character;
+            out.value = letters_[idx].value;
+            out.quantity = 1;
+            letters_[idx].quantity -= 1;
+            --total_letters_;
+            return true;
         }
+        // loop until found (expected to finish because total_letters_ > 0)
     }
-    return hand;
 }
 
-void display_hand(Hand* hand) {
-    for (int i = 0; i < hand->total_letters; ++i) {
-        cout << hand->letters[i].character << " ";
-    }
-    cout << endl;
-}
-
-void display_pocket(Pocket* pocket) {
+void Pocket::display(std::ostream &os) const noexcept
+{
     for (int i = 0; i < 26; ++i) {
-        cout << pocket->letters[i].character << ": " << pocket->letters[i].quantity << " ";
+        os << letters_[i].character << ": " << letters_[i].quantity << " ";
     }
-    cout << endl;
+    os << std::endl;
+}
+
+Hand::Hand()
+{
+    letters_.clear();
+    letters_.reserve(HAND_SIZE);
+}
+
+void Hand::fillFrom(Pocket &pocket)
+{
+    while (static_cast<int>(letters_.size()) < HAND_SIZE) {
+        Letter l;
+        if (!pocket.draw(l)) break;
+        add(l);
+    }
+}
+
+void Hand::add(const Letter &l)
+{
+    if (static_cast<int>(letters_.size()) < HAND_SIZE) {
+        letters_.push_back(l);
+    }
+}
+
+void Hand::display(std::ostream &os) const noexcept
+{
+    for (const auto &l : letters_) {
+        os << l.character << " ";
+    }
+    os << std::endl;
+}
+
+int Hand::size() const noexcept
+{
+    return static_cast<int>(letters_.size());
 }

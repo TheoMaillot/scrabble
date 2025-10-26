@@ -1,0 +1,14 @@
+Scrabble
+
+Réserve de lettres : liste chainée letter A {nb_pt, quantité}
+	-> fct pour les générer toutes OU écriture dans un fichier
+	-> fct piocher lettres (nb lettre à piocher)
+
+Jouer un mot
+	-> check word pour vérifier si le mot est valide
+	-> put word pour jouer le mot
+
+Plateau de jeu et Calcul des pts: liste de liste contenant la valeur de la case. Pour les
+multiplicateur de lettre : calculer directement, pour les mult de mots : modification d'un coeff qui sera appliqué à la fin du calcul.
+
+Comment prendre en compte lorsqu'on utilise une lettre déjà posée ou qu'on complète un mot ?

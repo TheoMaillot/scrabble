@@ -1,35 +1,40 @@
-#include <cstdlib>
+#ifndef LETTER_POCKET_HPP
+#define LETTER_POCKET_HPP
+
+#include <array>
+#include <vector>
 #include <iostream>
 
-using namespace std;
+constexpr int HAND_SIZE = 7;
 
-#define HAND_SIZE 7
-
-typedef struct letter
-{
+struct Letter {
     char character;
     int value;
     int quantity;
-}Letter;
+};
 
-typedef struct pocket
-{
-    Letter letters[26];
-    int total_letters;
-}Pocket;
+class Pocket {
+public:
+    Pocket();                        // initialise le sac (quantités, total)
+    int totalLetters() const noexcept;
+    bool draw(Letter &out);          // tire une lettre (false si vide)
+    void display(std::ostream &os = std::cout) const noexcept;
 
-typedef struct hand
-{
-    Letter* letters;
-    int total_letters;
-}Hand;
+private:
+    std::array<Letter, 26> letters_;
+    int total_letters_;
+};
 
-Pocket* create_letter_pocket();
+class Hand {
+public:
+    Hand();                          // main vide
+    void fillFrom(Pocket &pocket);   // remplir jusqu'à HAND_SIZE en tirant du pocket
+    void add(const Letter &l);       // ajoute une lettre (si place)
+    void display(std::ostream &os = std::cout) const noexcept;
+    int size() const noexcept;
 
-Hand* create_hand();
+private:
+    std::vector<Letter> letters_;    // taille <= HAND_SIZE
+};
 
-Hand* withdraw_letters(Hand* hand, Pocket* pocket);
-
-void display_hand(Hand* hand);
-
-void display_pocket(Pocket* pocket);
+#endif
