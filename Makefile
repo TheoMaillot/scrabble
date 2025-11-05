@@ -7,8 +7,7 @@ CXXFLAGS = -Wall -Wextra -std=c++17 -Iinc
 LDFLAGS = 
 
 # Répertoires
-SRC_DIR = src/core
-INC_DIR = inc
+SRC_DIR = src/game
 OBJ_DIR = obj
 
 # Détection du système d'exploitation
