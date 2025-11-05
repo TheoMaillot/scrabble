@@ -1,4 +1,4 @@
-#include "hand.hpp"
+#include "../inc/main.hpp"
 
 Hand::Hand()
 {

@@ -1,4 +1,4 @@
-#include "letter_pocket.hpp"
+#include "../inc/letter_pocket.hpp"
 #include <random>
 
 Pocket::Pocket()
