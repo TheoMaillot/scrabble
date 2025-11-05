@@ -5,8 +5,6 @@
 #include <vector>
 #include <iostream>
 
-constexpr int HAND_SIZE = 7;
-
 struct Letter {
     char character;
     int value;

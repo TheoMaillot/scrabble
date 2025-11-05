@@ -1,5 +1,5 @@
-#ifndef HAND_HPP
-#define HAND_HPP
+#ifndef EASEL_HPP
+#define EASEL_HPP
 
 #include <array>
 #include <vector>
@@ -7,10 +7,10 @@
 
 #include "letter_pocket.hpp"
 
-class Hand {
+class Easel {
 public:
-    Hand();                          // main vide
-    void fillFrom(Pocket &pocket);   // remplir jusqu'à HAND_SIZE en tirant du pocket
+    Easel();                          // chevalet vide
+    void fillFrom(Pocket &pocket);   // remplir jusqu'à EASEL_SIZE en tirant du pocket
     void add(const Letter &l);       // ajoute une lettre (si place)
     void display(std::ostream &os = std::cout) const noexcept;
     int size() const noexcept;

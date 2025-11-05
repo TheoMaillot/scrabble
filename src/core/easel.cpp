@@ -1,28 +1,28 @@
 #include "../inc/main.hpp"
 
-Hand::Hand()
+Easel::Easel()
 {
     letters_.clear();
-    letters_.reserve(HAND_SIZE);
+    letters_.reserve(EASEL_SIZE);
 }
 
-void Hand::fillFrom(Pocket &pocket)
+void Easel::fillFrom(Pocket &pocket)
 {
-    while (static_cast<int>(letters_.size()) < HAND_SIZE) {
+    while (static_cast<int>(letters_.size()) < EASEL_SIZE) {
         Letter l;
         if (!pocket.draw(l)) break;
         add(l);
     }
 }
 
-void Hand::add(const Letter &l)
+void Easel::add(const Letter &l)
 {
-    if (static_cast<int>(letters_.size()) < HAND_SIZE) {
+    if (static_cast<int>(letters_.size()) < EASEL_SIZE) {
         letters_.push_back(l);
     }
 }
 
-void Hand::display(std::ostream &os) const noexcept
+void Easel::display(std::ostream &os) const noexcept
 {
     for (const auto &l : letters_) {
         os << l.character << " ";
@@ -30,7 +30,7 @@ void Hand::display(std::ostream &os) const noexcept
     os << std::endl;
 }
 
-int Hand::size() const noexcept
+int Easel::size() const noexcept
 {
     return static_cast<int>(letters_.size());
 }
