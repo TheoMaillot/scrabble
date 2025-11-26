@@ -54,4 +54,29 @@ void Board::initializeMultipliers()
     }
 
     // Placement des multiplicateurs
+
+    //mot triple
+    for (int i=0;i< 8; ++i) {
+        int x = MT_positions[i][0];
+        int y = MT_positions[i][1];
+        grid_[x][y].multiplier = Multiplier::TRIPLE_WORD;
+    }
+    //mot double
+    for (int i=0;i< 17; ++i) {
+        int x = MD_positions[i][0];
+        int y = MD_positions[i][1];
+        grid_[x][y].multiplier = Multiplier::DOUBLE_WORD;
+    }
+    //lettre triple
+    for (int i=0;i< 12; ++i) {
+        int x = LT_positions[i][0];
+        int y = LT_positions[i][1];
+        grid_[x][y].multiplier = Multiplier::TRIPLE_LETTER;
+    }
+    //lettre double
+    for (int i=0;i< 24; ++i) {
+        int x = LD_positions[i][0];
+        int y = LD_positions[i][1];
+        grid_[x][y].multiplier = Multiplier::TRIPLE_LETTER;
+    }
 }
